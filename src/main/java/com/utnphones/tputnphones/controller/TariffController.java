@@ -1,7 +1,7 @@
 package com.utnphones.tputnphones.controller;
 
-import com.utnphones.tputnphones.domain.phoneLine;
-import com.utnphones.tputnphones.services.PhoneLineService;
+import com.utnphones.tputnphones.domain.Tariff;
+import com.utnphones.tputnphones.services.TariffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,30 +16,30 @@ import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.util.List;
 
-@RequestMapping(value = "/api/phoneLine")
+@RequestMapping(value = "/api/tariff")
 @RestController
-public class PhoneLineController {
+public class TariffController {
 
     @Autowired
-    private PhoneLineService phoneLineService;
+    private TariffService tariffService;
 
     @PostMapping
-    public ResponseEntity newPhoneLine(@RequestBody phoneLine phoneLine, HttpServletRequest request){
-        phoneLine newPhoneLine = phoneLineService.save(phoneLine);
+    public ResponseEntity newPhoneLine(@RequestBody Tariff tariff, HttpServletRequest request){
+        Tariff newTariff = tariffService.save(tariff);
         URI location = ServletUriComponentsBuilder.
                 fromServletMapping(request)
-                .path("/api/phoneLine/" + newPhoneLine.getPhoneNumber()).build()
+                .path("/api/phoneLine/" + newTariff.getIdTariff()).build()
                 .toUri();
         return ResponseEntity.created(location).build();
     }
 
     @GetMapping
-    public ResponseEntity<List<phoneLine>> findAll(){
-        return ResponseEntity.ok(phoneLineService.findAll());
+    public ResponseEntity<List<Tariff>> findAll(){
+        return ResponseEntity.ok(tariffService.findAll());
     }
 
-    @GetMapping(value = "/{phoneLineId}")
-    public ResponseEntity<phoneLine> findAllById(@PathVariable Integer id){
-        return ResponseEntity.ok(phoneLineService.findById(id));
+    @GetMapping(value = "/{tariffId}")
+    public ResponseEntity<Tariff> findAllById(@PathVariable Long id){
+        return ResponseEntity.ok(tariffService.findById(id));
     }
 }
