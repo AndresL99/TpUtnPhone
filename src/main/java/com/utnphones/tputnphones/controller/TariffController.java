@@ -42,4 +42,9 @@ public class TariffController {
     public ResponseEntity<Tariff> findAllById(@PathVariable Long id){
         return ResponseEntity.ok(tariffService.findById(id));
     }
+
+    @GetMapping(value = "/{cityOriginId}/{cityDestinationId}")
+    public ResponseEntity<Long> findByIds(@PathVariable Long cityOriginId,@PathVariable Long cityDestinationId){
+        return ResponseEntity.ok(tariffService.findByCities(cityOriginId,cityDestinationId));
+    }
 }

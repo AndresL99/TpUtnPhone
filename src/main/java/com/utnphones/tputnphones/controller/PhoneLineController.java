@@ -38,8 +38,9 @@ public class PhoneLineController {
         return ResponseEntity.ok(phoneLineService.findAll());
     }
 
+    /*
     @GetMapping(value = "/{phoneLineId}")
     public ResponseEntity<phoneLine> findAllById(@PathVariable Integer id){
         return ResponseEntity.ok(phoneLineService.findById(id));
-    }
+    }*/
 }

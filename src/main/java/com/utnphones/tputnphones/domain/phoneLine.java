@@ -24,7 +24,7 @@ public class phoneLine
 {
     @Id
     @Column(name = "telephone_number")
-    private Integer phoneNumber;
+    private String phoneNumber;
 
     @OneToOne
     @JoinColumn(name = "user_dni")

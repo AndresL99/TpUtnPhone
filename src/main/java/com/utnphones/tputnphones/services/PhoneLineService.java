@@ -22,7 +22,8 @@ public class PhoneLineService {
         return phoneLineRepository.findAll();
     }
 
-    public phoneLine findById(Integer id){
-        return phoneLineRepository.findById(id).orElseThrow(()->new EntityNotFoundException("La factura no existe"));
-    }
+
+    /*public phoneLine findById(S id){
+        return phoneLineRepository.findById(id).orElseThrow(()->new EntityNotFoundException("El numero telefonico no existe"));
+    }*/
 }

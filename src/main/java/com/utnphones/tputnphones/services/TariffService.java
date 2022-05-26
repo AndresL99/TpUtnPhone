@@ -23,6 +23,11 @@ public class TariffService {
     }
 
     public Tariff findById(Long id){
-        return tariffRepository.findById(id).orElseThrow(()->new EntityNotFoundException("La factura no existe"));
+        return tariffRepository.findById(id).orElseThrow(()->new EntityNotFoundException("La tarifa no existe"));
     }
+
+    public Long findByCities(Long cityOrigin, Long cityDestination){
+        return tariffRepository.getTariffByIds(cityOrigin,cityDestination);
+    }
+
 }

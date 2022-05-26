@@ -5,5 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PhoneLineRepository extends JpaRepository<phoneLine, Integer> {
+public interface PhoneLineRepository extends JpaRepository<phoneLine, String> {
+
+    boolean existsByPhoneNumber(String number);
 }
