@@ -25,4 +25,10 @@ public class UserService {
     public User findByDni(Integer dni){
         return userRepository.findByDni(dni).orElseThrow(()->new EntityNotFoundException("El usuario no existe"));
     }
+
+    public User getByUsernameAndPassword(String username, String password)
+    {
+        return userRepository.findByUsernameAndPassword(username, password);
+    }
+
 }
