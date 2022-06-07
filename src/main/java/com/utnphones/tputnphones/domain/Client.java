@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,18 +15,18 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Data
-@Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 @Builder
-@Table(name = "telephone_Lines")
-public class phoneLine
+@Table(name = "clients")
+public class Client
 {
     @Id
-    @Column(name = "telephone_number")
-    private String phoneNumber;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idClient;
 
-    @OneToOne
-    @JoinColumn(name = "id_client")
-    private Client idClient;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "dni")
+    private User user;
 }

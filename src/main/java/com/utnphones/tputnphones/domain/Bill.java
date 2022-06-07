@@ -41,7 +41,7 @@ public class Bill
     private Date expirationDate;
 
     @ManyToOne
-    @JoinColumn(name = "user_dni")
-    private User userDni;
+    @JoinColumn(name = "id_client")
+    private Client idClient;
 
 }
