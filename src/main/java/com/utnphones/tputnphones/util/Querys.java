@@ -13,4 +13,22 @@ public class Querys {
     public static final String GET_TARIFF_BY_CITIES_ID = " select * from tariffs t \n" +
             "WHERE t.id_city_origin = ?1 \n" +
             "and t.id_city_destination = ?2";
+
+    public static final String GET_CALLS_FOR_USER_EMPLOYEE = "SELECT c.*" +
+            "FROM calls c " +
+            "INNER JOIN telephone_Lines tl " +
+            "ON tl.telephone_number = c.id_number_origin" +
+            "INNER JOIN users u " +
+            "WHERE u.dni = ?1 AND c.day_time BETWEEN ?2 AND ?3 ";
+
+    public static final String GET_CALLS_FOR_USER_CLIENT = "SELECT c.* " +
+            "FROM calls c " +
+            "INNER JOIN telephone_Lines tl " +
+            "ON tl.telephone_number = c.id_number_origin " +
+            "INNER JOIN clients cl " +
+            "WHERE cl.id_client = ?1 AND c.day_time BETWEEN ?2 AND ?3 ";
+
+    public static final String GET_BILLS_FOR_USER_CLIENT = "SELECT b.* FROM bills b " +
+            "JOIN clients c ON b.id_client = c.id_client " +
+            "WHERE c.id_client = ?1 AND b.date_facturation BETWEEN ?2 AND ?3 ";
 }

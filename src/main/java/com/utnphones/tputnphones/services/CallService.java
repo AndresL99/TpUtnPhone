@@ -11,6 +11,8 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -81,4 +83,15 @@ public class CallService {
     public boolean findByNumber(String number){
         return phoneLineRepository.existsByPhoneNumber(number);
     }
+
+    public Page<Call>getCallByUserAndRank(Integer dni, Date start, Date end, Pageable pageable)
+    {
+        return callRepository.getCallByUserAndRank(dni,start,end,pageable);
+    }
+
+    public Page<Call>getCallByClient(Long idClient, Date start, Date end, Pageable pageable)
+    {
+        return callRepository.getCallByClient(idClient,start,end,pageable);
+    }
+
 }

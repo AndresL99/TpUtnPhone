@@ -1,6 +1,7 @@
 package com.utnphones.tputnphones.services;
 
 import com.utnphones.tputnphones.domain.User;
+import com.utnphones.tputnphones.exception.UserExistException;
 import com.utnphones.tputnphones.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,15 @@ public class UserService {
     private UserRepository userRepository;
 
     public User save(User user){
-        return userRepository.save(user);
+        if(!userRepository.existsById(user.getDni()))
+        {
+            return userRepository.save(user);
+        }
+        else
+        {
+            throw new UserExistException("El usuario ya se encuentra registrado. ");
+        }
+
     }
 
     public List<User> findAll(){
