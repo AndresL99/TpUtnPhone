@@ -24,11 +24,18 @@ create table users(
                       constraint fk_city foreign key(id_city) references cities(id_city)
 );
 
+create table clients(
+                        id_client bigint not null,
+                        dni integer not null,
+                        constraint pk_id_client primary key (id_client),
+                        constraint fk_dni_client foreign key(dni) references users(dni)
+);
+
 create table telephone_Lines(
                                 telephone_number varchar(20) not null,
-                                user_dni integer not null,
+                                id_client bigint not null,
                                 constraint pk_telephone_number primary key (telephone_number),
-                                constraint fk_users foreign key(user_dni) references users(dni));
+                                constraint fk_id_client foreign key(id_client) references clients(id_client));
 
 create table tariffs(
                         id_tariff bigint not null,
@@ -46,13 +53,13 @@ create table tariffs(
 
 create table bills(
                       id_bill bigint not null,
-                      user_dni integer not null,
+                      id_client bigint not null,
                       number_calls integer not null,
                       price_total float not null,
                       date_facturation date not null,
                       date_expiration date not null,
                       constraint pk_id_bill primary key (id_bill),
-                      constraint fk_user_dni foreign key(user_dni) references users(dni));
+                      constraint fk_id_client_bill foreign key(id_client) references clients(id_client));
 
 create table calls(
                       id_call bigint auto_increment,
