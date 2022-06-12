@@ -1,15 +1,12 @@
 package com.utnphones.tputnphones.services;
 
 import com.utnphones.tputnphones.domain.Call;
-import com.utnphones.tputnphones.domain.phoneLine;
+import com.utnphones.tputnphones.domain.PhoneLine;
 import com.utnphones.tputnphones.dto.CallDto;
 import com.utnphones.tputnphones.repository.CallRepository;
 import com.utnphones.tputnphones.repository.CityRepository;
 import com.utnphones.tputnphones.repository.PhoneLineRepository;
 import com.utnphones.tputnphones.repository.TariffRepository;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,11 +37,11 @@ public class CallService {
     public Object save(CallDto incoming) throws ParseException {
 
         if(findByNumber(incoming.getOrigin()) && findByNumber(incoming.getDestination())){
-            phoneLine phone1 = phoneLine.builder()
+            PhoneLine phone1 = PhoneLine.builder()
                     .phoneNumber(incoming.getOrigin())
                     .build();
 
-            phoneLine phone2 = phoneLine.builder()
+            PhoneLine phone2 = PhoneLine.builder()
                     .phoneNumber(incoming.getDestination())
                     .build();
 
@@ -89,9 +86,12 @@ public class CallService {
         return callRepository.getCallByUserAndRank(dni,start,end,pageable);
     }
 
+
     public Page<Call>getCallByClient(Long idClient, Date start, Date end, Pageable pageable)
     {
         return callRepository.getCallByClient(idClient,start,end,pageable);
     }
+
+
 
 }

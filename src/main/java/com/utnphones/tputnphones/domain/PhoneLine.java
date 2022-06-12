@@ -20,7 +20,7 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @Builder
 @Table(name = "telephone_Lines")
-public class phoneLine
+public class PhoneLine
 {
     @Id
     @Column(name = "telephone_number")

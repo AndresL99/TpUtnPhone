@@ -49,6 +49,11 @@ public class ClientService
         clientRepository.deleteById(id);
     }
 
+    public Client getByUsername(String username)
+    {
+        return clientRepository.getClientByUsername(username);
+    }
+
 
 
 

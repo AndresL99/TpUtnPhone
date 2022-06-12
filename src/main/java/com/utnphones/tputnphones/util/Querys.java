@@ -31,4 +31,8 @@ public class Querys {
     public static final String GET_BILLS_FOR_USER_CLIENT = "SELECT b.* FROM bills b " +
             "JOIN clients c ON b.id_client = c.id_client " +
             "WHERE c.id_client = ?1 AND b.date_facturation BETWEEN ?2 AND ?3 ";
+
+    public static final String GET_CLIENT_USERNAME = "Select c.* from clients c " +
+            "join users u on c.dni = u.dni " +
+            "where u.username = ?1 ";
 }

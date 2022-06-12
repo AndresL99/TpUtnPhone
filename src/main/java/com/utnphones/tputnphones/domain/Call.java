@@ -37,11 +37,11 @@ public class Call {
 
     @OneToOne
     @JoinColumn(name = "id_number_origin")
-    private phoneLine originNumber;
+    private PhoneLine originNumber;
 
     @OneToOne
     @JoinColumn(name = "id_number_destination")
-    private phoneLine destinationNumber;
+    private PhoneLine destinationNumber;
 
     @OneToOne
     @JoinColumn(name = "id_city_origin")

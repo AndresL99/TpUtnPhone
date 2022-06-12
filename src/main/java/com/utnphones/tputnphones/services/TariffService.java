@@ -1,6 +1,9 @@
 package com.utnphones.tputnphones.services;
 
+import com.utnphones.tputnphones.domain.City;
 import com.utnphones.tputnphones.domain.Tariff;
+import com.utnphones.tputnphones.exception.TariffExistException;
+import com.utnphones.tputnphones.exception.TariffNotExistException;
 import com.utnphones.tputnphones.repository.TariffRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,9 +16,18 @@ public class TariffService {
 
     @Autowired
     private TariffRepository tariffRepository;
+    private CityService cityService;
 
     public Tariff save(Tariff tariff){
-        return tariffRepository.save(tariff);
+        if(!tariffRepository.existsById(tariff.getIdTariff()))
+        {
+            return tariffRepository.save(tariff);
+        }
+        else
+        {
+            throw new TariffExistException("La tarifa que desea ingresar ya existe.");
+        }
+
     }
 
     public List<Tariff> findAll(){
@@ -28,6 +40,21 @@ public class TariffService {
 
     public Long findByCities(Long cityOrigin, Long cityDestination){
         return tariffRepository.getTariffByIds(cityOrigin,cityDestination);
+    }
+
+    public void putTariff(Long idTariff, Long idCity,Tariff tariff)
+    {
+        if(tariffRepository.existsById(tariff.getIdTariff()))
+        {
+            tariff = findById(idTariff);
+            City city = cityService.findById(idCity);
+            tariff.setOriginCity(city);
+            tariffRepository.save(tariff);
+        }
+        else
+        {
+            throw new TariffNotExistException("Tarifa inexistente.");
+        }
     }
 
 }
