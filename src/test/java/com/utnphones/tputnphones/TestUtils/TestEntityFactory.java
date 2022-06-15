@@ -1,7 +1,12 @@
 package com.utnphones.tputnphones.TestUtils;
 
+import com.utnphones.tputnphones.domain.Bill;
+import com.utnphones.tputnphones.domain.Call;
 import com.utnphones.tputnphones.domain.City;
+import com.utnphones.tputnphones.domain.PhoneLine;
+import com.utnphones.tputnphones.domain.Tariff;
 import com.utnphones.tputnphones.domain.User;
+import com.utnphones.tputnphones.dto.CallDto;
 import com.utnphones.tputnphones.dto.LoginRequestDto;
 import com.utnphones.tputnphones.dto.UserDto;
 
@@ -59,5 +64,46 @@ public class TestEntityFactory {
         List<City> cityList = new ArrayList<>();
         cityList.add(getCity());
         return cityList;
+    }
+
+    public static Call getCall(){
+        return Call.builder()
+                .idCall(1L)
+                .duration(10L)
+                .totalPrice(10f)
+                .originNumber(PhoneLine.builder()
+                        .phoneNumber("2235583444")
+                        .build())
+                .destinationNumber(PhoneLine.builder()
+                        .phoneNumber("1147475566")
+                        .build())
+                .originCity(City.builder()
+                        .idCity(2L)
+                        .build())
+                .destinationCity(City.builder()
+                        .idCity(1L)
+                        .build())
+                .tariff(Tariff.builder()
+                        .idTariff(1L)
+                        .build())
+                .bill(Bill.builder()
+                        .idBill(1L)
+                        .build())
+                .build();
+    }
+
+    public static List<Call> getCallList(){
+        List<Call> callList = new ArrayList<>();
+        callList.add(getCall());
+        return callList;
+    }
+
+    public static CallDto getCallDto(){
+        return CallDto.builder()
+                .origin("2235583444")
+                .destination("1147475566")
+                .datetime("06/02/2018 15:00:00")
+                .duration(10L)
+                .build();
     }
 }

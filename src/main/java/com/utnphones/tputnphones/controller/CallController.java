@@ -20,8 +20,12 @@ import java.util.List;
 @RestController
 public class CallController {
 
-    @Autowired
     private CallService callService;
+
+    @Autowired
+    public CallController(CallService callService) {
+        this.callService = callService;
+    }
 
     @GetMapping
     public ResponseEntity<List<Call>> findAll(){
