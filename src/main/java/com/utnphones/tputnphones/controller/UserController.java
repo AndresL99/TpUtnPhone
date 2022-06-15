@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.util.Date;
 import java.util.List;
@@ -33,7 +32,7 @@ import static com.utnphones.tputnphones.util.Constants.AUTH_EMPLOYEE;
 import static com.utnphones.tputnphones.util.Constants.AUTH_CLIENT;
 import static com.utnphones.tputnphones.util.Constants.JWT_SECRET;
 
-@RequestMapping(value = "/user")
+@RequestMapping(value = "/api/user")
 @RestController
 @Slf4j
 public class UserController {
@@ -51,23 +50,23 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity newUser(@RequestBody User user, HttpServletRequest request){
+    public ResponseEntity<URI> newUser(@RequestBody User user) {
         User newUser = userService.save(user);
-        URI location = ServletUriComponentsBuilder.
-                fromServletMapping(request)
-                .path("/user/" + newUser.getDni()).build()
-                //.path("/{addressId}")
-                //.buildAndExpand("user/"+newUser.getDni())
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{dni}")
+                .buildAndExpand(newUser.getDni())
                 .toUri();
-        return ResponseEntity.created(location).build();
+        return new ResponseEntity<>(location, HttpStatus.CREATED);
     }
+
 
     @GetMapping
     public ResponseEntity<List<User>> findAll(){
         return ResponseEntity.ok(userService.findAll());
     }
 
-    @GetMapping(value = "/{userDni}")
+    @GetMapping(value = "/{dni}")
     public ResponseEntity<User> findAllById(@PathVariable Integer dni){
         return ResponseEntity.ok(userService.findByDni(dni));
     }
