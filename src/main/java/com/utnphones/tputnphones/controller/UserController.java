@@ -33,7 +33,7 @@ import static com.utnphones.tputnphones.util.Constants.AUTH_EMPLOYEE;
 import static com.utnphones.tputnphones.util.Constants.AUTH_CLIENT;
 import static com.utnphones.tputnphones.util.Constants.JWT_SECRET;
 
-@RequestMapping(value = "/api/user")
+@RequestMapping(value = "/user")
 @RestController
 @Slf4j
 public class UserController {
@@ -55,7 +55,9 @@ public class UserController {
         User newUser = userService.save(user);
         URI location = ServletUriComponentsBuilder.
                 fromServletMapping(request)
-                .path("/api/phoneLine/" + newUser.getDni()).build()
+                .path("/user/" + newUser.getDni()).build()
+                //.path("/{addressId}")
+                //.buildAndExpand("user/"+newUser.getDni())
                 .toUri();
         return ResponseEntity.created(location).build();
     }
