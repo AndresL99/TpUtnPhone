@@ -3,6 +3,7 @@ package com.utnphones.tputnphones.TestUtils;
 import com.utnphones.tputnphones.domain.Bill;
 import com.utnphones.tputnphones.domain.Call;
 import com.utnphones.tputnphones.domain.City;
+import com.utnphones.tputnphones.domain.Client;
 import com.utnphones.tputnphones.domain.PhoneLine;
 import com.utnphones.tputnphones.domain.Tariff;
 import com.utnphones.tputnphones.domain.User;
@@ -105,5 +106,24 @@ public class TestEntityFactory {
                 .datetime("06/02/2018 15:00:00")
                 .duration(10L)
                 .build();
+    }
+
+    public static Bill getBill(){
+        return Bill.builder()
+                .idBill(1L)
+                .numberCalls(1)
+                .totalPrice(10f)
+                //.invoiceDate("06/02/2018 15:00:00")
+                //.expirationDate("06/02/2018 15:00:00")
+                .idClient(Client.builder()
+                        .idClient(1L)
+                        .build())
+                .build();
+    }
+
+    public static List<Bill> getBillList(){
+        List<Bill> billList = new ArrayList<>();
+        billList.add(getBill());
+        return billList;
     }
 }
