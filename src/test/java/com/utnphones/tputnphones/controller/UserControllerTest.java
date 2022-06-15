@@ -27,7 +27,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import java.util.List;
 
 @SpringBootTest
-public class UserControllerTest extends AbstractMVCTest{
+class UserControllerTest extends AbstractMVCTest{
 
     private UserController userController;
 

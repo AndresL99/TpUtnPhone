@@ -46,4 +46,18 @@ public class TestEntityFactory {
                 .password("nico123")
                 .build();
     }
+
+    public static City getCity(){
+        return City.builder()
+                .idCity(1L)
+                .prefixNumber(11)
+                .name("Buenos Aires")
+                .build();
+    }
+
+    public static List<City> getCityList(){
+        List<City> cityList = new ArrayList<>();
+        cityList.add(getCity());
+        return cityList;
+    }
 }
