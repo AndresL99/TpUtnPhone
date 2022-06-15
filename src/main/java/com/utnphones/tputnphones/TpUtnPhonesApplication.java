@@ -27,6 +27,7 @@ public class TpUtnPhonesApplication {
                     .addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
                     .authorizeRequests()
                     .antMatchers(HttpMethod.POST, "/api/user/login").permitAll()
+                    .antMatchers(HttpMethod.POST, "/api/calls").permitAll()
                     .anyRequest().authenticated();
         }
     }

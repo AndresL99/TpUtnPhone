@@ -80,3 +80,52 @@ create table calls(
                       constraint fk_tariff foreign key(id_tariff) references tariffs(id_tariff),
                       constraint fk_bill foreign key(id_bill) references bills(id_bill)
 );
+
+delimiter $$
+create procedure get_clients_and_bill()
+begin
+	declare vTelephoneNumber varchar(30);
+
+    declare vFinished integer default 0;
+
+    declare cur Cursor for select telephone_lines.telephone_number from telephone_lines;
+
+declare continue handler for not found set vFinished=1;
+
+open cur;
+
+getPersonas : loop
+    		fetch cur into vTelephoneNumber;
+        if (vFinished = 1) then
+			leave getPersonas;
+end if;
+call liquidate_client(vTelephoneNumber);
+
+end loop getPersonas;
+close cur;
+end;
+$$
+
+delimiter $$
+CREATE PROCEDURE liquidate_client(pNumberCliente varchar(30))
+begin
+	declare vTotal float;
+    declare vCant float;
+    declare vDummy int;
+    declare vIdClient int;
+    declare vLiquidacion int;
+select count(c.id_call), sum(c.duration * t.prece_x_minute) into vCant , vTotal
+from calls c
+         inner join tariffs t
+                    on c.id_tariff = t.id_tariff
+where c.id_bill is null
+  and c.id_number_origin = pNumberCliente;
+select tl.id_client into vIdClient from telephone_lines tl where tl.telephone_number= pNumberCliente;
+insert into bills(id_client,number_calls,price_total,date_facturation,date_expiration) values (vIdClient,vCant,vTotal,now(),now());
+#Se toma el id_bill
+    set vLiquidacion = last_insert_id();
+update calls
+set id_bill = vLiquidacion
+where id_number_origin = pNumberCliente and id_bill is null;
+END;
+$$

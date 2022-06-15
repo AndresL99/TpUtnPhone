@@ -50,4 +50,8 @@ public class BillService {
         return billRepository.getBillByClient(idClient,start,end,pageable);
     }
 
+    public void generateBills(){
+        billRepository.calculateBills();
+    }
+
 }
