@@ -164,11 +164,6 @@ public class TestEntityFactory {
         return tariffList;
     }
 
-    public static UserDto getUserDtoEmployee()
-    {
-        return UserDto.builder().username("nicoRoldan").employee(true).build();
-    }
-
     public static PhoneLine getPhoneLine(){
         return PhoneLine.builder()
                 .phoneNumber("2235559562")

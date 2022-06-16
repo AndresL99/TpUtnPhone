@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.utnphones.tputnphones.domain.User;
 import com.utnphones.tputnphones.dto.LoginResponseDto;
 import com.utnphones.tputnphones.dto.UserDto;
+import com.utnphones.tputnphones.exception.UserExistException;
 import com.utnphones.tputnphones.services.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,12 +19,16 @@ import static com.utnphones.tputnphones.TestUtils.TestEntityFactory.getUser;
 import static com.utnphones.tputnphones.TestUtils.TestEntityFactory.getUserDto;
 import static com.utnphones.tputnphones.TestUtils.TestEntityFactory.getUserList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.persistence.EntityNotFoundException;
+import java.util.Collections;
 import java.util.List;
 
 @SpringBootTest
@@ -38,7 +43,6 @@ class UserControllerTest extends AbstractMVCTest{
     private ModelMapper modelMapper;
 
     private Authentication auth;
-
 
     @BeforeEach
     public void setUp() {
@@ -58,13 +62,31 @@ class UserControllerTest extends AbstractMVCTest{
         assertEquals(HttpStatus.OK,listResponseEntity.getStatusCode());
     }
 
+    /*
     @Test
-    void getByIdTest(){
+    public void getAllTestBad()
+    {
+
+        when(userService.findAll()).thenReturn(Collections.emptyList());
+        ResponseEntity<List<User>>listResponseEntity = userController.findAll();
+
+        assertEquals(HttpStatus.NO_CONTENT,listResponseEntity.getStatusCode());
+        assertEquals(0,listResponseEntity.getBody().size());
+    }*/
+
+    @Test
+    void getByIdTestOk(){
         when(userService.findByDni(getUser().getDni())).thenReturn(getUser());
 
         ResponseEntity<User>listResponseEntity = userController.findAllById(getUser().getDni());
 
         assertEquals(HttpStatus.OK,listResponseEntity.getStatusCode());
+    }
+
+    @Test
+    void getByIdTestBad(){
+        when(userService.findByDni(anyInt())).thenThrow(new EntityNotFoundException());
+        assertThrows(EntityNotFoundException.class, () -> {userController.findAllById(0);});
     }
 
     @Test
@@ -101,5 +123,11 @@ class UserControllerTest extends AbstractMVCTest{
         ResponseEntity responseEntity = userController.newUser(getUser());
 
         assertEquals(HttpStatus. CREATED.value(),responseEntity.getStatusCodeValue());
+    }
+
+    @Test
+    void addUserTestBad(){
+        when(userService.save(getUser())).thenThrow(new UserExistException("no existe el usuario"));
+        assertThrows(UserExistException.class, () -> {userController.newUser(getUser());});
     }
 }

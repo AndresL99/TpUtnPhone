@@ -2,6 +2,7 @@ package com.utnphones.tputnphones.controller.backOffice;
 
 import com.utnphones.tputnphones.controller.AbstractMVCTest;
 import com.utnphones.tputnphones.domain.Client;
+import com.utnphones.tputnphones.domain.PhoneLine;
 import com.utnphones.tputnphones.dto.UserDto;
 import com.utnphones.tputnphones.services.ClientService;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.util.Collections;
 import java.util.List;
 
 import static com.utnphones.tputnphones.TestUtils.TestEntityFactory.aBackOffice;
@@ -54,6 +56,20 @@ public class ClientBackOfficeControllerTest extends AbstractMVCTest {
 
         assertEquals(HttpStatus.OK,listResponseEntity.getStatusCode());
     }
+
+    @Test
+    void findAllNoContentTest(){
+        auth = mock(Authentication.class);
+
+        when(auth.getPrincipal()).thenReturn(backOffice);
+
+        when(clientService.getAllClient()).thenReturn(Collections.emptyList());
+
+        ResponseEntity<List<Client>> listResponseEntity = clientBackOfficeController.getAllClient(auth);
+
+        assertEquals(HttpStatus.NO_CONTENT,listResponseEntity.getStatusCode());
+    }
+
 
     @Test
     void findClientTest(){

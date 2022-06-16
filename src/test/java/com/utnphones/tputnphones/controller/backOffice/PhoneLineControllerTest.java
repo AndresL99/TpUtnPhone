@@ -3,6 +3,8 @@ package com.utnphones.tputnphones.controller.backOffice;
 import com.utnphones.tputnphones.controller.AbstractMVCTest;
 import com.utnphones.tputnphones.domain.PhoneLine;
 import com.utnphones.tputnphones.dto.UserDto;
+import com.utnphones.tputnphones.exception.PhoneLineExistException;
+import com.utnphones.tputnphones.exception.PhoneLineNotExistException;
 import com.utnphones.tputnphones.services.PhoneLineService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,12 +15,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.util.Collections;
 import java.util.List;
 
 import static com.utnphones.tputnphones.TestUtils.TestEntityFactory.aBackOffice;
 import static com.utnphones.tputnphones.TestUtils.TestEntityFactory.getPhoneLine;
 import static com.utnphones.tputnphones.TestUtils.TestEntityFactory.getPhoneLineList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -56,6 +60,20 @@ class PhoneLineControllerTest extends AbstractMVCTest {
     }
 
     @Test
+    void findAllNoContentTest(){
+        auth = mock(Authentication.class);
+
+        when(auth.getPrincipal()).thenReturn(backOffice);
+
+        when(phoneLineService.findAll()).thenReturn(Collections.emptyList());
+
+        ResponseEntity<List<PhoneLine>> listResponseEntity = phoneLineController.findAll(auth);
+
+        assertEquals(HttpStatus.NO_CONTENT,listResponseEntity.getStatusCode());
+    }
+
+
+    @Test
     void deletePhoneLineTest(){
         auth = mock(Authentication.class);
 
@@ -71,7 +89,7 @@ class PhoneLineControllerTest extends AbstractMVCTest {
     }
 
     @Test
-    void newPhoneLine(){
+    void newPhoneLineTest(){
         auth = mock(Authentication.class);
 
         when(auth.getPrincipal()).thenReturn(backOffice);

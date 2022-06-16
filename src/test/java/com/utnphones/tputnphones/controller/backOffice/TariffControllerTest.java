@@ -3,6 +3,9 @@ package com.utnphones.tputnphones.controller.backOffice;
 import com.utnphones.tputnphones.controller.AbstractMVCTest;
 import com.utnphones.tputnphones.domain.Tariff;
 import com.utnphones.tputnphones.dto.UserDto;
+import com.utnphones.tputnphones.exception.BillNotExistException;
+import com.utnphones.tputnphones.exception.TariffExistException;
+import com.utnphones.tputnphones.exception.UserExistException;
 import com.utnphones.tputnphones.services.TariffService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,12 +16,18 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.persistence.EntityNotFoundException;
+import java.text.ParseException;
 import java.util.List;
 
 import static com.utnphones.tputnphones.TestUtils.TestEntityFactory.aBackOffice;
+import static com.utnphones.tputnphones.TestUtils.TestEntityFactory.getCallDto;
 import static com.utnphones.tputnphones.TestUtils.TestEntityFactory.getTariff;
 import static com.utnphones.tputnphones.TestUtils.TestEntityFactory.getTariffList;
+import static com.utnphones.tputnphones.TestUtils.TestEntityFactory.getUser;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -65,6 +74,12 @@ class TariffControllerTest extends AbstractMVCTest {
         ResponseEntity<Tariff> listResponseEntity = tariffController.findAllById(auth,getTariff().getIdTariff());
 
         assertEquals(HttpStatus.OK,listResponseEntity.getStatusCode());
+    }
+
+    @Test
+    void findAllByIdBad(){
+        when(tariffService.findById(anyLong())).thenThrow(new EntityNotFoundException("La tarifa no existe"));
+        assertThrows(EntityNotFoundException.class, () -> {tariffController.findAllById(auth,0L);});
     }
 
     @Test

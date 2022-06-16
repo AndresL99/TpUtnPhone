@@ -11,11 +11,15 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 import static com.utnphones.tputnphones.TestUtils.TestEntityFactory.getCity;
 import static com.utnphones.tputnphones.TestUtils.TestEntityFactory.getCityList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -49,6 +53,12 @@ public class CityControllerTest extends AbstractMVCTest{
         ResponseEntity<City>listResponseEntity = cityController.findAllById(getCity().getIdCity());
 
         assertEquals(HttpStatus.OK,listResponseEntity.getStatusCode());
+    }
+
+    @Test
+    void getByIdTestBad(){
+        when(cityService.findById(anyLong())).thenThrow(new EntityNotFoundException());
+        assertThrows(EntityNotFoundException.class, () -> {cityController.findAllById(0L);});
     }
 
     @Test
