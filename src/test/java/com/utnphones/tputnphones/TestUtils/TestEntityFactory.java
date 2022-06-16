@@ -10,6 +10,10 @@ import com.utnphones.tputnphones.domain.User;
 import com.utnphones.tputnphones.dto.CallDto;
 import com.utnphones.tputnphones.dto.LoginRequestDto;
 import com.utnphones.tputnphones.dto.UserDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -126,4 +130,53 @@ public class TestEntityFactory {
         billList.add(getBill());
         return billList;
     }
+
+    public static Client getClient(){
+        return Client.builder()
+                .idClient(2L)
+                .user(User.builder()
+                        .username("nicoRoldan")
+                        .password("nico123")
+                        .build())
+                .build();
+    }
+
+    public static Tariff getTariff(){
+        return Tariff.builder()
+                .idTariff(1L)
+                .originCity(getCity())
+                .destinationCity(getCity())
+                .priceXMinute(1F)
+                //.beginHour("12:00:00")
+                //.untilHour()
+                .build();
+    }
+
+    public static List<Tariff> getTariffList(){
+        List<Tariff> tariffList = new ArrayList<>();
+        tariffList.add(getTariff());
+        return tariffList;
+    }
+
+    public static UserDto getUserDtoEmployee()
+    {
+        return UserDto.builder().username("nicoRoldan").employee(true).build();
+    }
+
+    public static UserDto aBackOffice()
+    {
+        return UserDto.builder().username("nicoRoldan").employee(true).build();
+    }
+
+    public static Pageable getPageable()
+    {
+        return PageRequest.of(0,10);
+    }
+
+    public static Page<Call> getCallPage()
+    {
+        return new PageImpl<>(List.of(getCall()));
+    }
+
+    public static Page<Bill> getBillPage() {return new PageImpl<>(List.of(getBill()));}
 }

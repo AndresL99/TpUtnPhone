@@ -1,6 +1,5 @@
 package com.utnphones.tputnphones.controller.webController;
 
-
 import com.utnphones.tputnphones.domain.Bill;
 import com.utnphones.tputnphones.domain.Call;
 import com.utnphones.tputnphones.domain.Client;
@@ -30,7 +29,6 @@ import java.util.List;
 public class ClientWebController
 {
 
-
     private ClientService clientService;
     private BillService billService;
     private CallService callService;
@@ -51,7 +49,7 @@ public class ClientWebController
                                                   @RequestParam ("end") @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss") Date end,
                                                   Pageable pageable)
     {
-        verifyAuthClient(authentication,idClient);
+        verifyAuthBackOffice(authentication);
         Page<Call>calls = callService.getCallByClient(idClient,start,end,pageable);
         return response(calls);
     }
@@ -65,7 +63,7 @@ public class ClientWebController
                                                     @RequestParam ("end") @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss") Date end,
                                                     Pageable pageable)
     {
-        verifyAuthClient(authentication,idClient);
+        verifyAuthBackOffice(authentication);
         Page<Bill>bills = billService.getBillByClient(idClient,start,end,pageable);
         return response(bills);
     }
@@ -78,6 +76,15 @@ public class ClientWebController
             throw new ResponseStatusException(HttpStatus.FORBIDDEN,"Denied Access");
         }
     }
+
+    private void verifyAuthBackOffice(Authentication authentication)
+    {
+        if(!((UserDto) authentication.getPrincipal()).getEmployee()){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,"Access forbidden for your profile.");
+        }
+
+    }
+
 
     private ResponseEntity response(List list, Page page) {
         HttpStatus status = !list.isEmpty() ? HttpStatus.OK : HttpStatus.NO_CONTENT;
