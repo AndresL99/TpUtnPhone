@@ -141,6 +141,12 @@ public class TestEntityFactory {
                 .build();
     }
 
+    public static List<Client> getClientList(){
+        List<Client> clientList = new ArrayList<>();
+        clientList.add(getClient());
+        return clientList;
+    }
+
     public static Tariff getTariff(){
         return Tariff.builder()
                 .idTariff(1L)

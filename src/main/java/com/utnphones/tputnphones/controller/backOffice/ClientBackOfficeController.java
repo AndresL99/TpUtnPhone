@@ -1,7 +1,5 @@
 package com.utnphones.tputnphones.controller.backOffice;
 
-import com.utnphones.tputnphones.domain.Bill;
-import com.utnphones.tputnphones.domain.Call;
 import com.utnphones.tputnphones.domain.Client;
 import com.utnphones.tputnphones.dto.UserDto;
 import com.utnphones.tputnphones.services.ClientService;
@@ -15,12 +13,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.util.List;
 
@@ -36,15 +32,16 @@ public class ClientBackOfficeController
     }
 
     @PostMapping
-    public ResponseEntity addClient(Authentication authentication,@RequestBody Client client,HttpServletRequest request)
+    public ResponseEntity addClient(Authentication authentication,@RequestBody Client client)
     {
         verifyAuthBackOffice(authentication);
         Client newClient = this.clientService.addClient(client);
-        URI location = ServletUriComponentsBuilder.
-                fromServletMapping(request)
-                .path("/backOffice/client/" + newClient.getIdClient()).build()
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(newClient.getIdClient())
                 .toUri();
-        return ResponseEntity.created(location).build();
+        return new ResponseEntity<>(location, HttpStatus.CREATED);
     }
 
     @GetMapping("/{idClient}")
