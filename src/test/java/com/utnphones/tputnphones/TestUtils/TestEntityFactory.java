@@ -163,6 +163,19 @@ public class TestEntityFactory {
         return UserDto.builder().username("nicoRoldan").employee(true).build();
     }
 
+    public static PhoneLine getPhoneLine(){
+        return PhoneLine.builder()
+                .phoneNumber("2235559562")
+                .idClient(getClient())
+                .build();
+    }
+
+    public static List<PhoneLine> getPhoneLineList() {
+        List<PhoneLine> phoneLineList = new ArrayList<>();
+        phoneLineList.add(getPhoneLine());
+        return phoneLineList;
+    }
+
     public static UserDto aBackOffice()
     {
         return UserDto.builder().username("nicoRoldan").employee(true).build();
