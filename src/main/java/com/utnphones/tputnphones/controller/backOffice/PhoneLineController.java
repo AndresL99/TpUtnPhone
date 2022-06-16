@@ -17,14 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.util.List;
 
 @RequestMapping(value = "/backOffice/phoneLine")
 @RestController
 public class PhoneLineController {
-
 
     private PhoneLineService phoneLineService;
 
@@ -34,15 +32,16 @@ public class PhoneLineController {
     }
 
     @PostMapping
-    public ResponseEntity newPhoneLine(Authentication authentication, @RequestBody PhoneLine phoneLine, HttpServletRequest request){
+    public ResponseEntity newPhoneLine(Authentication authentication, @RequestBody PhoneLine phoneLine){
 
         verifyAuthBackOffice(authentication);
         PhoneLine newPhoneLine = phoneLineService.save(phoneLine);
-        URI location = ServletUriComponentsBuilder.
-                fromServletMapping(request)
-                .path("/backOffice/phoneLine/" + newPhoneLine.getPhoneNumber()).build()
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{phoneNumber}")
+                .buildAndExpand(newPhoneLine.getPhoneNumber())
                 .toUri();
-        return ResponseEntity.created(location).build();
+        return new ResponseEntity<>(location, HttpStatus.CREATED);
     }
 
     @GetMapping

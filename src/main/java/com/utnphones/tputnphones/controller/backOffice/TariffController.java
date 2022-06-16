@@ -1,6 +1,5 @@
 package com.utnphones.tputnphones.controller.backOffice;
 
-import com.utnphones.tputnphones.domain.Client;
 import com.utnphones.tputnphones.domain.Tariff;
 import com.utnphones.tputnphones.dto.UserDto;
 import com.utnphones.tputnphones.services.TariffService;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.util.List;
 
@@ -34,15 +32,16 @@ public class TariffController {
     }
 
     @PostMapping
-    public ResponseEntity addTariff(Authentication authentication,@RequestBody Tariff tariff, HttpServletRequest request){
+    public ResponseEntity addTariff(Authentication authentication,@RequestBody Tariff tariff){
 
         verifyAuthBackOffice(authentication);
         Tariff newTariff = this.tariffService.save(tariff);
-        URI location = ServletUriComponentsBuilder.
-                fromServletMapping(request)
-                .path("/backOffice/tariff/" + newTariff.getIdTariff()).build()
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(newTariff.getIdTariff())
                 .toUri();
-        return ResponseEntity.created(location).build();
+        return new ResponseEntity<>(location, HttpStatus.CREATED);
     }
 
     @GetMapping

@@ -7,6 +7,9 @@ import com.utnphones.tputnphones.domain.Client;
 import com.utnphones.tputnphones.domain.PhoneLine;
 import com.utnphones.tputnphones.domain.Tariff;
 import com.utnphones.tputnphones.domain.User;
+import com.utnphones.tputnphones.dto.CallDto;
+import com.utnphones.tputnphones.dto.LoginRequestDto;
+import com.utnphones.tputnphones.dto.UserDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -51,7 +54,14 @@ public class TestEntityFactory {
 
     public static Tariff getTariff()
     {
-        return Tariff.builder().idTariff(1L).originCity(getCity()).destinationCity(getCity()).beginHour(new Time(10)).untilHour(new Time(10)).priceXMinute(40F).build();
+        return Tariff.builder().
+                idTariff(1L)
+                .originCity(getCity())
+                .destinationCity(getCity())
+                .beginHour(new Time(10))
+                .untilHour(new Time(10))
+                .priceXMinute(40F)
+                .build();
     }
 
     public static List<Tariff>getTariffs()
@@ -62,6 +72,7 @@ public class TestEntityFactory {
     }
 
     public static Client getClient()
+
     {
         return Client.builder().idClient(1L).user(getUser()).build();
     }
@@ -73,9 +84,11 @@ public class TestEntityFactory {
         return clients;
     }
 
-    public static PhoneLine getTelephoneLine()
-    {
-        return PhoneLine.builder().idClient(getClient()).phoneNumber("2241563256").build();
+    public static PhoneLine getTelephoneLine() {
+        return PhoneLine.builder()
+                .idClient(getClient())
+                .phoneNumber("2241563256")
+                .build();
     }
 
     public static List<PhoneLine>getPhoneLines()
@@ -87,7 +100,14 @@ public class TestEntityFactory {
 
     public static Bill getBill()
     {
-        return Bill.builder().idBill(1L).idClient(getClient()).expirationDate(new Date()).invoiceDate(new Date()).numberCalls(2).totalPrice(1000F).build();
+        return Bill.builder()
+                .idBill(1L)
+                .idClient(getClient())
+                .expirationDate(new Date())
+                .invoiceDate(new Date())
+                .numberCalls(2)
+                .totalPrice(1000F)
+                .build();
     }
 
     public static List<Bill>getBills()
@@ -124,5 +144,33 @@ public class TestEntityFactory {
     {
         return new PageImpl<>(List.of(getCall()));
     }
+
+    public static UserDto getUserDto(){
+        return UserDto.builder()
+                .username("nicoRoldan")
+                .employee(true)
+                .build();
+    }
+
+    public static LoginRequestDto getLoginRequestDto(){
+        return LoginRequestDto.builder()
+                .username("andreslerner")
+                .password("andres123")
+                .build();
+    }
+    public static CallDto getCallDto(){
+        return CallDto.builder()
+                .origin("2235583444")
+                .destination("1147475566")
+                .datetime("06/02/2018 15:00:00")
+                .duration(10L)
+                .build();
+    }
+
+    public static UserDto aBackOffice()
+    {
+        return UserDto.builder().username("nicoRoldan").employee(true).build();
+    }
+
 
 }
