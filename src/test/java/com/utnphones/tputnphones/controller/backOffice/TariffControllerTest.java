@@ -78,7 +78,10 @@ class TariffControllerTest extends AbstractMVCTest {
 
     @Test
     void findAllByIdBad(){
-        when(tariffService.findById(anyLong())).thenThrow(new EntityNotFoundException("La tarifa no existe"));
+        auth = mock(Authentication.class);
+
+        when(auth.getPrincipal()).thenReturn(backOffice);
+        when(tariffService.findById(anyLong())).thenThrow(new EntityNotFoundException());
         assertThrows(EntityNotFoundException.class, () -> {tariffController.findAllById(auth,0L);});
     }
 
