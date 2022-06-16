@@ -70,6 +70,7 @@ public class CallService {
             newCall.setDestinationCity(cityRepository.getById(cityDestinationId));
 
             newCall.setTariff(tariffRepository.getTariffByCitiesId(idOriginCity,cityDestinationId));
+            newCall.setTotalPrice(incoming.getDuration() * newCall.getTariff().getPriceXMinute());
 
             return callRepository.save(newCall);
         }
