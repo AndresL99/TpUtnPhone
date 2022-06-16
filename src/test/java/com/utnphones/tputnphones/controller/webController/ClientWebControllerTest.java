@@ -59,7 +59,7 @@ class ClientWebControllerTest extends AbstractMVCTest {
         Date end = new Date();
 
         when(auth.getPrincipal()).thenReturn(backOffice);
-        //when(clientService.getByUsername(((UserDto)auth.getPrincipal()).getUsername())).thenReturn(getClient());
+
         when(callService.getCallByClient(getClient().getIdClient(),start,end,getPageable())).thenReturn(getCallPage());
 
         ResponseEntity<List<Call>> responseEntity = clientWebController.getCallByClient(auth,getClient().getIdClient(),start,end,getPageable());
