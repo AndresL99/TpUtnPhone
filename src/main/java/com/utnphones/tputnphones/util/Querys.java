@@ -14,10 +14,10 @@ public class Querys {
             "WHERE t.id_city_origin = ?1 \n" +
             "and t.id_city_destination = ?2";
 
-    public static final String GET_CALLS_FOR_USER_EMPLOYEE = "SELECT c.*" +
+    public static final String GET_CALLS_FOR_USER_EMPLOYEE = "SELECT c.* " +
             "FROM calls c " +
             "INNER JOIN telephone_Lines tl " +
-            "ON tl.telephone_number = c.id_number_origin" +
+            "ON tl.telephone_number = c.id_number_origin " +
             "INNER JOIN users u " +
             "WHERE u.dni = ?1 AND c.day_time BETWEEN ?2 AND ?3 ";
 

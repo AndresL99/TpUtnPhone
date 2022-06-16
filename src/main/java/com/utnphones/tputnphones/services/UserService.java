@@ -12,33 +12,32 @@ import java.util.List;
 @Service
 public class UserService {
 
-    @Autowired
     private UserRepository userRepository;
 
-    public User save(User user){
-        if(!userRepository.existsById(user.getDni()))
-        {
+    @Autowired
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public User save(User user) {
+        if (!userRepository.existsById(user.getDni())) {
             return userRepository.save(user);
-        }
-        else
-        {
+        } else {
             throw new UserExistException("El usuario ya se encuentra registrado. ");
         }
 
     }
 
-    public List<User> findAll(){
+    public List<User> findAll() {
         return userRepository.findAll();
     }
 
-    public User findByDni(Integer dni){
-        return userRepository.findByDni(dni).orElseThrow(()->new EntityNotFoundException("El usuario no existe"));
+    public User findByDni(Integer dni) {
+        return userRepository.findByDni(dni).orElseThrow(() -> new EntityNotFoundException("El usuario no existe"));
     }
 
-    public User getByUsernameAndPassword(String username, String password)
-    {
+    public User getByUsernameAndPassword(String username, String password) {
         return userRepository.findByUsernameAndPassword(username, password);
     }
-
 
 }

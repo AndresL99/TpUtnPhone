@@ -4,6 +4,8 @@ import javax.validation.ConstraintViolationException;
 
 import com.utnphones.tputnphones.exception.BillExistException;
 import com.utnphones.tputnphones.exception.BillNotExistException;
+import com.utnphones.tputnphones.exception.CallExistException;
+import com.utnphones.tputnphones.exception.CallNotExistException;
 import com.utnphones.tputnphones.exception.ClientExistException;
 import com.utnphones.tputnphones.exception.ClientNotExistException;
 import com.utnphones.tputnphones.exception.PhoneLineExistException;
@@ -91,4 +93,18 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(t.getMessage());
     }
+
+    @ExceptionHandler({CallExistException.class})
+    public ResponseEntity<Object>callAlreadyExist(CallExistException c)
+    {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(c.getMessage());
+    }
+
+    @ExceptionHandler({CallNotExistException.class})
+    public ResponseEntity<Object>callNotExist(CallNotExistException c)
+    {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(c.getMessage());
+    }
+
+
 }

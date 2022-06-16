@@ -12,8 +12,12 @@ import java.util.List;
 @Service
 public class PhoneLineService {
 
-    @Autowired
     private PhoneLineRepository phoneLineRepository;
+
+    @Autowired
+    public PhoneLineService(PhoneLineRepository phoneLineRepository) {
+        this.phoneLineRepository = phoneLineRepository;
+    }
 
     public PhoneLine save(PhoneLine phoneLine){
         if(!phoneLineRepository.existsByPhoneNumber(phoneLine.getPhoneNumber()))

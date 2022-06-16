@@ -3,6 +3,7 @@ package com.utnphones.tputnphones.controller;
 import com.utnphones.tputnphones.domain.Bill;
 import com.utnphones.tputnphones.services.BillService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,6 +42,12 @@ public class BillController {
     @GetMapping(value = "/{billId}")
     public ResponseEntity<Bill> findAllById(@PathVariable Long id){
         return ResponseEntity.ok(billService.findById(id));
+    }
+
+    @PostMapping("/generate")
+    public ResponseEntity generateBills(){
+        billService.generateBills();
+        return new ResponseEntity(HttpStatus.OK);
     }
 
 }

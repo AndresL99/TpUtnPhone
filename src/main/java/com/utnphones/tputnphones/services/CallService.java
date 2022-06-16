@@ -22,17 +22,24 @@ import java.util.List;
 @Service
 public class CallService {
 
-    @Autowired
     private CallRepository callRepository;
 
-    @Autowired
     private PhoneLineRepository phoneLineRepository;
 
-    @Autowired
     private CityRepository cityRepository;
 
-    @Autowired
     private TariffRepository tariffRepository;
+
+    @Autowired
+    public CallService(CallRepository callRepository, PhoneLineRepository phoneLineRepository, CityRepository cityRepository, TariffRepository tariffRepository) {
+        this.callRepository = callRepository;
+        this.phoneLineRepository = phoneLineRepository;
+        this.cityRepository = cityRepository;
+        this.tariffRepository = tariffRepository;
+    }
+
+
+
 
     public Object save(CallDto incoming) throws ParseException {
 

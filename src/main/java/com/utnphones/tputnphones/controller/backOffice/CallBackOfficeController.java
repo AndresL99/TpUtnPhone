@@ -31,7 +31,7 @@ public class CallBackOfficeController
         this.callService = callService;
     }
 
-    @GetMapping
+    @GetMapping("/{dni}/users")
     public ResponseEntity<List<Call>>getCallByUser(Authentication authentication,
                                                    @PathVariable Integer dni,
                                                    @RequestParam("start") @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss") Date start,

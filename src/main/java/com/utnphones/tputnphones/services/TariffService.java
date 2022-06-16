@@ -14,9 +14,14 @@ import java.util.List;
 @Service
 public class TariffService {
 
-    @Autowired
+
     private TariffRepository tariffRepository;
     private CityService cityService;
+    @Autowired
+    public TariffService(TariffRepository tariffRepository, CityService cityService) {
+        this.tariffRepository = tariffRepository;
+        this.cityService = cityService;
+    }
 
     public Tariff save(Tariff tariff){
         if(!tariffRepository.existsById(tariff.getIdTariff()))
@@ -35,7 +40,7 @@ public class TariffService {
     }
 
     public Tariff findById(Long id){
-        return tariffRepository.findById(id).orElseThrow(()->new EntityNotFoundException("La tarifa no existe"));
+        return tariffRepository.findById(id).orElseThrow(()->new TariffNotExistException("La tarifa no existe"));
     }
 
     public Long findByCities(Long cityOrigin, Long cityDestination){
