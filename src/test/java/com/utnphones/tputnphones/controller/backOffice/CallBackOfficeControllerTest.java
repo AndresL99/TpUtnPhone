@@ -15,7 +15,6 @@ import java.util.List;
 
 import static com.utnphones.tputnphones.utils.TestEntityFactory.aBackOffice;
 import static com.utnphones.tputnphones.utils.TestEntityFactory.aPageable;
-import static com.utnphones.tputnphones.utils.TestEntityFactory.getCall;
 import static com.utnphones.tputnphones.utils.TestEntityFactory.getCallPage;
 import static com.utnphones.tputnphones.utils.TestEntityFactory.getUser;
 import static org.junit.jupiter.api.Assertions.assertEquals;

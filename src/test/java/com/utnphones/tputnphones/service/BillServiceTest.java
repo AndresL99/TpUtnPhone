@@ -51,7 +51,6 @@ public class BillServiceTest {
 
         Bill bill = billService.save(getBill());
 
-        assertNotNull(bill);
         assertEquals(getBill().getIdBill(),bill.getIdBill());
         verify(billRepository,times(1)).existsById(idBill);
     }

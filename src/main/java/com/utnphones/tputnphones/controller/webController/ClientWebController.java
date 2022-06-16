@@ -2,7 +2,6 @@ package com.utnphones.tputnphones.controller.webController;
 
 import com.utnphones.tputnphones.domain.Bill;
 import com.utnphones.tputnphones.domain.Call;
-import com.utnphones.tputnphones.domain.Client;
 import com.utnphones.tputnphones.dto.UserDto;
 import com.utnphones.tputnphones.services.BillService;
 import com.utnphones.tputnphones.services.CallService;
@@ -68,35 +67,11 @@ public class ClientWebController
         return response(bills);
     }
 
-    private void verifyAuthClient(Authentication authentication, Long idClient)
-    {
-        Client client = this.clientService.getByUsername(((UserDto)authentication.getPrincipal()).getUsername());
-        if(!client.getIdClient().equals(idClient))
-        {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN,"Denied Access");
-        }
-    }
-
     private void verifyAuthBackOffice(Authentication authentication)
     {
         if(!((UserDto) authentication.getPrincipal()).getEmployee()){
             throw new ResponseStatusException(HttpStatus.FORBIDDEN,"Access forbidden for your profile.");
         }
-
-    }
-
-
-    private ResponseEntity response(List list, Page page) {
-        HttpStatus status = !list.isEmpty() ? HttpStatus.OK : HttpStatus.NO_CONTENT;
-        return ResponseEntity.status(status).
-                header("X-Total-Count", Long.toString(page.getTotalElements())).
-                header("X-Total-Pages", Long.toString(page.getTotalPages())).
-                body(page.getContent());
-    }
-
-
-    private ResponseEntity response(List list) {
-        return ResponseEntity.status(list.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK).body(list);
     }
 
     private ResponseEntity response(Page page) {
