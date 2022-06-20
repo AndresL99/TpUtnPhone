@@ -14,6 +14,8 @@ import javax.persistence.EntityNotFoundException;
 import java.util.Date;
 import java.util.List;
 
+import static java.util.Objects.isNull;
+
 @Service
 public class BillService {
 
@@ -26,7 +28,7 @@ public class BillService {
     }
 
     public Bill save(Bill bill){
-        if(!billRepository.existsById(bill.getIdBill()))
+        if(bill.getIdBill() != null)
         {
             return billRepository.save(bill);
         }

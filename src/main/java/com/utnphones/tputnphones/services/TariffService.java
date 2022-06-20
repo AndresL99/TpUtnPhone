@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
+import static java.util.Objects.isNull;
+
 @Service
 public class TariffService {
 
@@ -24,7 +26,7 @@ public class TariffService {
     }
 
     public Tariff save(Tariff tariff){
-        if(!tariffRepository.existsById(tariff.getIdTariff()))
+        if(tariff.getIdTariff() != null)
         {
             return tariffRepository.save(tariff);
         }

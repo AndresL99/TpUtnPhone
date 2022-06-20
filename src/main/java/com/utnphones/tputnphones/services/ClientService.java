@@ -11,6 +11,8 @@ import org.springframework.web.client.HttpClientErrorException;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
+import static java.util.Objects.isNull;
+
 @Service
 public class ClientService
 {
@@ -24,7 +26,7 @@ public class ClientService
 
     public Client addClient(Client client)
     {
-        if(!clientRepository.existsById(client.getIdClient()))
+        if(client.getIdClient() != null)
         {
             return clientRepository.save(client);
         }

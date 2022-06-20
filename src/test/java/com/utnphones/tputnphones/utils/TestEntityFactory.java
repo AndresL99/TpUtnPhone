@@ -172,5 +172,10 @@ public class TestEntityFactory {
         return UserDto.builder().username("nicoRoldan").employee(true).build();
     }
 
+    public static UserDto aClient()
+    {
+        return UserDto.builder().username("andreslerner").employee(false).build();
+    }
+
 
 }

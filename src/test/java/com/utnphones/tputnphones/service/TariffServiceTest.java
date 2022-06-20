@@ -42,8 +42,6 @@ public class TariffServiceTest
     @Test
     void addTariffTestOk()
     {
-        Long idTariff = getTariff().getIdTariff();
-        when(tariffRepository.existsById(idTariff)).thenReturn(false);
         when(tariffRepository.save(getTariff())).thenReturn(getTariff());
 
         Tariff tariff = tariffService.save(getTariff());
@@ -54,9 +52,7 @@ public class TariffServiceTest
     @Test
     void addTariffTestFail()
     {
-        when(tariffRepository.existsById(4L)).thenReturn(true);
         when(tariffRepository.save(getTariff())).thenThrow(TariffExistException.class);
-
         assertThrows(TariffExistException.class,()-> tariffService.save(getTariff()));
     }
 

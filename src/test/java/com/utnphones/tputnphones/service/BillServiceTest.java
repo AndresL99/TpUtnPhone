@@ -45,14 +45,11 @@ public class BillServiceTest {
     @Test
     void saveBillTestOk()
     {
-        Long idBill = getBill().getIdBill();
-        when(billRepository.existsById(idBill)).thenReturn(false);
         when(billRepository.save(getBill())).thenReturn(getBill());
 
         Bill bill = billService.save(getBill());
 
-        assertEquals(getBill().getIdBill(),bill.getIdBill());
-        verify(billRepository,times(1)).existsById(idBill);
+        assertEquals(getBill(),bill);
     }
 
     @Test

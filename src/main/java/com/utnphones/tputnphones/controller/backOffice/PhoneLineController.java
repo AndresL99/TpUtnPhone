@@ -44,6 +44,13 @@ public class PhoneLineController {
         return new ResponseEntity<>(location, HttpStatus.CREATED);
     }
 
+    @GetMapping("/{phoneNumber}")
+    public ResponseEntity<PhoneLine> getPhoneLine(Authentication authentication,@PathVariable String phoneNumber)
+    {
+        verifyAuthBackOffice(authentication);
+        return ResponseEntity.ok(phoneLineService.getByPhoneNumber(phoneNumber));
+    }
+
     @GetMapping
     public ResponseEntity<List<PhoneLine>> findAll(Authentication authentication)
     {

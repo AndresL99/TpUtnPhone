@@ -3,6 +3,8 @@ package com.utnphones.tputnphones.services;
 import com.utnphones.tputnphones.domain.Call;
 import com.utnphones.tputnphones.domain.PhoneLine;
 import com.utnphones.tputnphones.dto.CallDto;
+import com.utnphones.tputnphones.exception.CallExistException;
+import com.utnphones.tputnphones.exception.CallNotExistException;
 import com.utnphones.tputnphones.repository.CallRepository;
 import com.utnphones.tputnphones.repository.CityRepository;
 import com.utnphones.tputnphones.repository.PhoneLineRepository;
@@ -73,7 +75,11 @@ public class CallService {
 
             return callRepository.save(newCall);
         }
-    return new EntityNotFoundException("No se encontro el numero");
+        else
+        {
+            throw new CallNotExistException("No se encontro el numero.");
+        }
+
     }
 
     public List<Call> findAll(){

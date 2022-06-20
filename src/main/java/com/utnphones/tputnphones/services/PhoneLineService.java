@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static java.util.Objects.isNull;
+
 @Service
 public class PhoneLineService {
 
@@ -20,7 +22,7 @@ public class PhoneLineService {
     }
 
     public PhoneLine save(PhoneLine phoneLine){
-        if(!phoneLineRepository.existsByPhoneNumber(phoneLine.getPhoneNumber()))
+        if(phoneLine.getPhoneNumber() != null)
         {
             return phoneLineRepository.save(phoneLine);
         }
@@ -29,6 +31,11 @@ public class PhoneLineService {
             throw new PhoneLineExistException("La linea de telefono ya ha sido asignada a un usuario existente.");
         }
 
+    }
+
+    public PhoneLine getByPhoneNumber(String phoneNumber)
+    {
+        return phoneLineRepository.findById(phoneNumber).orElseThrow(()-> new PhoneLineNotExistException("La linea no existe."));
     }
 
     public List<PhoneLine> findAll(){
