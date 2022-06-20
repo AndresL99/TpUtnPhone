@@ -3,6 +3,7 @@ package com.utnphones.tputnphones.controller.webController;
 import com.utnphones.tputnphones.controller.AbstractMVCTest;
 import com.utnphones.tputnphones.domain.Bill;
 import com.utnphones.tputnphones.domain.Call;
+import com.utnphones.tputnphones.domain.Client;
 import com.utnphones.tputnphones.dto.UserDto;
 import com.utnphones.tputnphones.services.BillService;
 import com.utnphones.tputnphones.services.CallService;
@@ -58,7 +59,9 @@ class ClientWebControllerTest extends AbstractMVCTest {
         Date start = new Date();
         Date end = new Date();
 
+
         when(auth.getPrincipal()).thenReturn(client);
+        when(clientService.getByUsername(((UserDto)auth.getPrincipal()).getUsername())).thenReturn(getClient());
 
         when(callService.getCallByClient(getClient().getIdClient(),start,end,aPageable())).thenReturn(getCallPage());
 
@@ -75,6 +78,7 @@ class ClientWebControllerTest extends AbstractMVCTest {
         Date end = new Date();
 
         when(auth.getPrincipal()).thenReturn(client);
+        when(clientService.getByUsername(((UserDto)auth.getPrincipal()).getUsername())).thenReturn(getClient());
         when(billService.getBillByClient(getClient().getIdClient(),start,end,aPageable())).thenReturn(getBillPage());
 
         ResponseEntity<List<Bill>> responseEntity = clientWebController.getBillByClient(auth,getClient().getIdClient(),start,end,aPageable());
