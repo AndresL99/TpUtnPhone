@@ -2,7 +2,10 @@ package com.utnphones.tputnphones.services;
 
 import com.utnphones.tputnphones.domain.Call;
 import com.utnphones.tputnphones.domain.PhoneLine;
+import com.utnphones.tputnphones.domain.Tariff;
 import com.utnphones.tputnphones.dto.CallDto;
+import com.utnphones.tputnphones.exception.CallNotExistException;
+import com.utnphones.tputnphones.exception.TariffNotExistException;
 import com.utnphones.tputnphones.repository.CallRepository;
 import com.utnphones.tputnphones.repository.CityRepository;
 import com.utnphones.tputnphones.repository.PhoneLineRepository;
@@ -18,6 +21,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
+import static java.util.Objects.isNull;
 
 @Service
 public class CallService {
@@ -38,12 +43,9 @@ public class CallService {
         this.tariffRepository = tariffRepository;
     }
 
-
-
-
     public Object save(CallDto incoming) throws ParseException {
 
-        if(findByNumber(incoming.getOrigin()) && findByNumber(incoming.getDestination())){
+        if(findByNumber(incoming.getOrigin()) && findByNumber(incoming.getDestination())) {
             PhoneLine phone1 = PhoneLine.builder()
                     .phoneNumber(incoming.getOrigin())
                     .build();
@@ -56,32 +58,36 @@ public class CallService {
             Date parsedDate = dateFormat.parse(incoming.getDatetime());
             Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
 
-            Call newCall = new Call();
+            Tariff tariff= tariffRepository.getTariffs(incoming.getOrigin(), incoming.getDestination());
+            if(!isNull(tariff)){
+                Call newCall = new Call();
 
-            newCall.setOriginNumber(phone1);
-            newCall.setDestinationNumber(phone2);
-            newCall.setDayTime(timestamp);
-            newCall.setDuration(incoming.getDuration());
+                newCall.setOriginNumber(phone1);
+                newCall.setDestinationNumber(phone2);
+                newCall.setDayTime(timestamp);
+                newCall.setDuration(incoming.getDuration());
+                newCall.setTariff(tariff);
+                newCall.setOriginCity(tariff.getOriginCity());
+                newCall.setDestinationCity(tariff.getDestinationCity());
 
-            Long idOriginCity= cityRepository.getCityIdByPhoneNumber(incoming.getOrigin());
-            newCall.setOriginCity(cityRepository.getById(idOriginCity));
+                newCall.setTotalPrice(incoming.getDuration() * newCall.getTariff().getPriceXMinute());
 
-            Long cityDestinationId= cityRepository.getCityIdByPhoneNumber(incoming.getDestination());
-            newCall.setDestinationCity(cityRepository.getById(cityDestinationId));
-
-            newCall.setTariff(tariffRepository.getTariffByCitiesId(idOriginCity,cityDestinationId));
-            newCall.setTotalPrice(incoming.getDuration() * newCall.getTariff().getPriceXMinute());
-
-            return callRepository.save(newCall);
+                return callRepository.save(newCall);
+            }
+            else {
+                throw new TariffNotExistException("No existe una tarifa para esas ciudades");
+            }
         }
-    return new EntityNotFoundException("No se encontro el numero");
+        else {
+            throw new CallNotExistException("No se encontro el numero.");
+        }
     }
 
     public List<Call> findAll(){
         return callRepository.findAll();
     }
 
-    public Call findById(Long id){
+    public Call findById(Long id) {
         return callRepository.findById(id).orElseThrow(()->new EntityNotFoundException("La llamada no existe"));
     }
 
@@ -89,17 +95,11 @@ public class CallService {
         return phoneLineRepository.existsByPhoneNumber(number);
     }
 
-    public Page<Call>getCallByUserAndRank(Integer dni, Date start, Date end, Pageable pageable)
-    {
+    public Page<Call>getCallByUserAndRank(Integer dni, Date start, Date end, Pageable pageable) {
         return callRepository.getCallByUserAndRank(dni,start,end,pageable);
     }
 
-
-    public Page<Call>getCallByClient(Long idClient, Date start, Date end, Pageable pageable)
-    {
+    public Page<Call>getCallByClient(Long idClient, Date start, Date end, Pageable pageable) {
         return callRepository.getCallByClient(idClient,start,end,pageable);
     }
-
-
-
 }

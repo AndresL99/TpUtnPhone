@@ -14,7 +14,7 @@
     <name>TpUtnPhones</name>
     <description>TpUtnPhones</description>
     <properties>
-        <java.version>11</java.version>
+        <java.version>8</java.version>
     </properties>
     <dependencies>
         <dependency>
@@ -120,11 +120,11 @@
                 <version>0.8.2</version>
                 <configuration>
                     <excludes>
-                        <exclude>**/com/utnPhones/TpUtnPhones/model/**</exclude>
-                        <exclude>**/com/utnPhones/TpUtnPhones/repository/**</exclude>
-                        <exclude>**/com/utnPhones/TpUtnPhones/configuration/**</exclude>
-                        <exclude>**/com/utnPhones/TpUtnPhones/util/**</exclude>
-                        <exclude>**/com/utnPhones/TpUtnPhones/JWTFilter/**</exclude>
+                        <exclude>/com/utnPhones/TpUtnPhones/domain/</exclude>
+                        <exclude>/com/utnPhones/TpUtnPhones/repository/</exclude>
+                        <exclude>/com/utnPhones/TpUtnPhones/configuration/</exclude>
+                        <exclude>/com/utnPhones/TpUtnPhones/util/</exclude>
+                        <exclude>/com/utnPhones/TpUtnPhones/JWTFilter/</exclude>
                     </excludes>
                 </configuration>
                 <executions>
@@ -177,6 +177,14 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>9</source>
+                    <target>9</target>
+                </configuration>
             </plugin>
         </plugins>
 

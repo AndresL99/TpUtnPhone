@@ -40,7 +40,6 @@ public class ClientServiceTest {
     void addClientTestOk()
     {
         Long idClient = getClient().getIdClient();
-        when(clientRepository.existsById(idClient)).thenReturn(false);
         when(clientRepository.save(getClient())).thenReturn(getClient());
 
         Client client = clientService.addClient(getClient());
@@ -51,7 +50,6 @@ public class ClientServiceTest {
     @Test
     void addClientTestFail()
     {
-        when(clientRepository.existsById(2L)).thenReturn(true);
         when(clientRepository.save(getClient())).thenThrow(ClientExistException.class);
         assertThrows(ClientExistException.class,()->clientService.addClient(getClient()));
     }

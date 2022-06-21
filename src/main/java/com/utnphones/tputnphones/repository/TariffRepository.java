@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import static com.utnphones.tputnphones.util.Querys.CALCULATE;
 import static com.utnphones.tputnphones.util.Querys.GET_TARIFF_BY_CITIES_ID;
 import static com.utnphones.tputnphones.util.Querys.GET_TARIFF_BY_NAMES;
 
@@ -16,4 +17,7 @@ public interface TariffRepository extends JpaRepository<Tariff, Long> {
 
     @Query(value = GET_TARIFF_BY_CITIES_ID, nativeQuery = true)
     Tariff getTariffByCitiesId(Long originCity, Long destinationCity);
+
+    @Query(value = CALCULATE,nativeQuery = true)
+    Tariff getTariffs(String originNumber, String destinationNumber);
 }

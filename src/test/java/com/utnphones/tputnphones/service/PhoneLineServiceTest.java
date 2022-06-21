@@ -37,8 +37,6 @@ public class PhoneLineServiceTest
     @Test
     void addPhoneLineTest()
     {
-        String phoneNumber = getTelephoneLine().getPhoneNumber();
-        when(phoneLineRepository.existsByPhoneNumber(phoneNumber)).thenReturn(false);
         when(phoneLineRepository.save(getTelephoneLine())).thenReturn(getTelephoneLine());
 
         PhoneLine phoneLine = phoneLineService.save(getTelephoneLine());
@@ -49,7 +47,6 @@ public class PhoneLineServiceTest
     @Test
     void addPhoneLineTestFail()
     {
-        when(phoneLineRepository.existsByPhoneNumber("2241444555")).thenReturn(true);
         when(phoneLineRepository.save(getTelephoneLine())).thenThrow(PhoneLineExistException.class);
         assertThrows(PhoneLineExistException.class,()->phoneLineService.save(getTelephoneLine()));
     }

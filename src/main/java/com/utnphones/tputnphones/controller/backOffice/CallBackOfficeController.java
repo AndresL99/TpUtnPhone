@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/backOffice/calls")
+@RequestMapping("/backOffice/")
 public class CallBackOfficeController
 {
     private CallService callService;
@@ -31,7 +31,7 @@ public class CallBackOfficeController
         this.callService = callService;
     }
 
-    @GetMapping("/{dni}/users")
+    @GetMapping("user/{dni}/calls")
     public ResponseEntity<List<Call>>getCallByUser(Authentication authentication,
                                                    @PathVariable Integer dni,
                                                    @RequestParam("start") @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss") Date start,

@@ -3,6 +3,7 @@ package com.utnphones.tputnphones.controller.webController;
 import com.utnphones.tputnphones.controller.AbstractMVCTest;
 import com.utnphones.tputnphones.domain.Bill;
 import com.utnphones.tputnphones.domain.Call;
+import com.utnphones.tputnphones.domain.Client;
 import com.utnphones.tputnphones.dto.UserDto;
 import com.utnphones.tputnphones.services.BillService;
 import com.utnphones.tputnphones.services.CallService;
@@ -17,6 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 import static com.utnphones.tputnphones.utils.TestEntityFactory.aBackOffice;
+import static com.utnphones.tputnphones.utils.TestEntityFactory.aClient;
 import static com.utnphones.tputnphones.utils.TestEntityFactory.aPageable;
 import static com.utnphones.tputnphones.utils.TestEntityFactory.getBill;
 import static com.utnphones.tputnphones.utils.TestEntityFactory.getBillPage;
@@ -37,7 +39,7 @@ class ClientWebControllerTest extends AbstractMVCTest {
 
     private ClientService clientService;
 
-    private UserDto backOffice;
+    private UserDto client;
 
     Authentication auth;
 
@@ -46,7 +48,7 @@ class ClientWebControllerTest extends AbstractMVCTest {
         clientService= mock(ClientService.class);
         billService= mock(BillService.class);
         callService= mock(CallService.class);
-        backOffice = aBackOffice();
+        client = aClient();
         clientWebController = new ClientWebController(clientService,billService,callService);
         auth= mock(Authentication.class);
     }
@@ -57,7 +59,9 @@ class ClientWebControllerTest extends AbstractMVCTest {
         Date start = new Date();
         Date end = new Date();
 
-        when(auth.getPrincipal()).thenReturn(backOffice);
+
+        when(auth.getPrincipal()).thenReturn(client);
+        when(clientService.getByUsername(((UserDto)auth.getPrincipal()).getUsername())).thenReturn(getClient());
 
         when(callService.getCallByClient(getClient().getIdClient(),start,end,aPageable())).thenReturn(getCallPage());
 
@@ -73,7 +77,8 @@ class ClientWebControllerTest extends AbstractMVCTest {
         Date start = new Date();
         Date end = new Date();
 
-        when(auth.getPrincipal()).thenReturn(backOffice);
+        when(auth.getPrincipal()).thenReturn(client);
+        when(clientService.getByUsername(((UserDto)auth.getPrincipal()).getUsername())).thenReturn(getClient());
         when(billService.getBillByClient(getClient().getIdClient(),start,end,aPageable())).thenReturn(getBillPage());
 
         ResponseEntity<List<Bill>> responseEntity = clientWebController.getBillByClient(auth,getClient().getIdClient(),start,end,aPageable());

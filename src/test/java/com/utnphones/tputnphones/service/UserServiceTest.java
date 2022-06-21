@@ -38,8 +38,6 @@ public class UserServiceTest
     @Test
     void addUserTestOk()
     {
-        Integer idUser = getUser().getDni();
-        when(userRepository.existsById(idUser)).thenReturn(false);
         when(userRepository.save(getUser())).thenReturn(getUser());
 
         User user = userService.save(getUser());
@@ -50,7 +48,6 @@ public class UserServiceTest
     @Test
     void addUserTestFailed()
     {
-        when(userRepository.existsById(44222444)).thenReturn(true);
         when(userRepository.save(getUser())).thenThrow(UserExistException.class);
         assertThrows(UserExistException.class,()->userService.save(getUser()));
     }

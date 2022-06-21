@@ -1,7 +1,9 @@
 package com.utnphones.tputnphones.controller.webController;
 
+
 import com.utnphones.tputnphones.domain.Bill;
 import com.utnphones.tputnphones.domain.Call;
+import com.utnphones.tputnphones.domain.Client;
 import com.utnphones.tputnphones.dto.UserDto;
 import com.utnphones.tputnphones.services.BillService;
 import com.utnphones.tputnphones.services.CallService;
@@ -48,7 +50,7 @@ public class ClientWebController
                                                   @RequestParam ("end") @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss") Date end,
                                                   Pageable pageable)
     {
-        verifyAuthBackOffice(authentication);
+        verifyAuthClient(authentication,idClient);
         Page<Call>calls = callService.getCallByClient(idClient,start,end,pageable);
         return response(calls);
     }
@@ -62,15 +64,17 @@ public class ClientWebController
                                                     @RequestParam ("end") @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss") Date end,
                                                     Pageable pageable)
     {
-        verifyAuthBackOffice(authentication);
+        verifyAuthClient(authentication,idClient);
         Page<Bill>bills = billService.getBillByClient(idClient,start,end,pageable);
         return response(bills);
     }
 
-    private void verifyAuthBackOffice(Authentication authentication)
+    private void verifyAuthClient(Authentication authentication,Long idClient)
     {
-        if(!((UserDto) authentication.getPrincipal()).getEmployee()){
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN,"Access forbidden for your profile.");
+        Client client = this.clientService.getByUsername(((UserDto)authentication.getPrincipal()).getUsername());
+        if(!client.getIdClient().equals(idClient))
+        {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,"Denied Access");
         }
     }
 
@@ -81,5 +85,6 @@ public class ClientWebController
                 header("X-Total-Count", Long.toString(page.getTotalElements())).
                 header("X-Total-Pages", Long.toString(page.getTotalPages())).
                 body(page.getContent());
+
     }
 }

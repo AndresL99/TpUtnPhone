@@ -23,7 +23,7 @@ public class TariffService {
     }
 
     public Tariff save(Tariff tariff){
-        if(!tariffRepository.existsById(tariff.getIdTariff()))
+        if(tariff.getIdTariff() != null)
         {
             return tariffRepository.save(tariff);
         }
