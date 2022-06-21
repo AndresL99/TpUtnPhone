@@ -22,7 +22,7 @@ public class PhoneLineService {
     }
 
     public PhoneLine save(PhoneLine phoneLine){
-        if(phoneLine.getPhoneNumber() != null)
+        if(!this.phoneLineRepository.findById(phoneLine.getPhoneNumber()).isPresent())
         {
             return phoneLineRepository.save(phoneLine);
         }

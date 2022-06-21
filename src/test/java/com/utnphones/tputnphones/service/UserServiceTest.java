@@ -13,10 +13,13 @@ import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
+import static com.utnphones.tputnphones.utils.TestEntityFactory.getClient;
 import static com.utnphones.tputnphones.utils.TestEntityFactory.getUser;
 import static com.utnphones.tputnphones.utils.TestEntityFactory.getUsers;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -38,6 +41,7 @@ public class UserServiceTest
     @Test
     void addUserTestOk()
     {
+        when(userRepository.findByDni(anyInt())).thenReturn(Optional.empty());
         when(userRepository.save(getUser())).thenReturn(getUser());
 
         User user = userService.save(getUser());
@@ -48,7 +52,7 @@ public class UserServiceTest
     @Test
     void addUserTestFailed()
     {
-        when(userRepository.save(getUser())).thenThrow(UserExistException.class);
+        when(userRepository.findByDni(anyInt())).thenReturn(Optional.ofNullable(getUser()));
         assertThrows(UserExistException.class,()->userService.save(getUser()));
     }
 

@@ -1,6 +1,7 @@
 package com.utnphones.tputnphones.service;
 
 import com.utnphones.tputnphones.domain.Tariff;
+import com.utnphones.tputnphones.exception.PhoneLineExistException;
 import com.utnphones.tputnphones.exception.TariffExistException;
 import com.utnphones.tputnphones.exception.TariffNotExistException;
 import com.utnphones.tputnphones.repository.TariffRepository;
@@ -16,9 +17,13 @@ import java.util.Optional;
 import static com.utnphones.tputnphones.utils.TestEntityFactory.getCity;
 import static com.utnphones.tputnphones.utils.TestEntityFactory.getTariff;
 import static com.utnphones.tputnphones.utils.TestEntityFactory.getTariffs;
+import static com.utnphones.tputnphones.utils.TestEntityFactory.getTelephoneLine;
+import static com.utnphones.tputnphones.utils.TestEntityFactory.getUser;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -42,6 +47,7 @@ public class TariffServiceTest
     @Test
     void addTariffTestOk()
     {
+        when(tariffRepository.findById(anyLong())).thenReturn(Optional.empty());
         when(tariffRepository.save(getTariff())).thenReturn(getTariff());
 
         Tariff tariff = tariffService.save(getTariff());
@@ -52,8 +58,8 @@ public class TariffServiceTest
     @Test
     void addTariffTestFail()
     {
-        when(tariffRepository.save(getTariff())).thenThrow(TariffExistException.class);
-        assertThrows(TariffExistException.class,()-> tariffService.save(getTariff()));
+        when(tariffRepository.findById(anyLong())).thenReturn(Optional.of(getTariff()));
+        assertThrows(TariffExistException.class,()->tariffService.save(getTariff()));
     }
 
     @Test

@@ -120,11 +120,14 @@
                 <version>0.8.2</version>
                 <configuration>
                     <excludes>
-                        <exclude>/com/utnPhones/TpUtnPhones/domain/</exclude>
-                        <exclude>/com/utnPhones/TpUtnPhones/repository/</exclude>
-                        <exclude>/com/utnPhones/TpUtnPhones/configuration/</exclude>
-                        <exclude>/com/utnPhones/TpUtnPhones/util/</exclude>
-                        <exclude>/com/utnPhones/TpUtnPhones/JWTFilter/</exclude>
+                        <exclude>**/domain/**</exclude>
+                        <exclude>**/exception/**</exclude>
+                        <exclude>**/repository/**</exclude>
+                        <exclude>**/configuration/**</exclude>
+                        <exclude>**/util/**</exclude>
+                        <exclude>**/JWTFilter/**</exclude>
+                        <exclude>**/dto/**</exclude>
+                        <exclude>**/TpUtnPhonesApplication.class</exclude>
                     </excludes>
                 </configuration>
                 <executions>
@@ -155,7 +158,7 @@
                                         <limit>
                                             <counter>INSTRUCTION</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>0.01</minimum>
+                                            <minimum>0.70</minimum>
                                         </limit>
                                     </limits>
                                 </rule>

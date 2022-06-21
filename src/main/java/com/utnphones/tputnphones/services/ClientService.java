@@ -26,7 +26,7 @@ public class ClientService
 
     public Client addClient(Client client)
     {
-        if(client.getIdClient() != null)
+        if(!this.clientRepository.findById(client.getIdClient()).isPresent())
         {
             return clientRepository.save(client);
         }

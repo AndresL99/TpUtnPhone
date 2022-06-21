@@ -9,8 +9,6 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
-import static java.util.Objects.isNull;
-
 @Service
 public class UserService {
 
@@ -22,7 +20,8 @@ public class UserService {
     }
 
     public User save(User user) {
-        if (user.getDni() != null) {
+        if(!this.userRepository.findByDni(user.getDni()).isPresent())
+        {
             return userRepository.save(user);
         } else {
             throw new UserExistException("El usuario ya se encuentra registrado. ");

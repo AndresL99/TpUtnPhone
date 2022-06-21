@@ -25,7 +25,7 @@ create table users(
 );
 
 create table clients(
-                        id_client bigint not null,
+                        id_client bigint auto_increment,
                         dni integer not null,
                         constraint pk_id_client primary key (id_client),
                         constraint fk_dni_client foreign key(dni) references users(dni)

@@ -27,18 +27,6 @@ public class BillService {
         this.billRepository = billRepository;
     }
 
-    public Bill save(Bill bill){
-        if(bill.getIdBill() != null)
-        {
-            return billRepository.save(bill);
-        }
-        else
-        {
-            throw new BillExistException("La factura ya ha sido procesada.");
-        }
-
-    }
-
     public List<Bill> findAll(){
         return billRepository.findAll();
     }

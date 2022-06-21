@@ -101,4 +101,14 @@ class PhoneLineControllerTest extends AbstractMVCTest {
         assertEquals(HttpStatus. CREATED.value(),responseEntity.getStatusCodeValue());
     }
 
+    @Test
+    void getPhoneLineTest(){
+        auth = mock(Authentication.class);
+        when(auth.getPrincipal()).thenReturn(backOffice);
+
+        when(phoneLineService.getByPhoneNumber(getTelephoneLine().getPhoneNumber())).thenReturn(getTelephoneLine());
+        ResponseEntity responseEntity = phoneLineController.getPhoneLine(auth,getTelephoneLine().getPhoneNumber());
+
+        assertEquals(HttpStatus.OK.value(),responseEntity.getStatusCodeValue());
+    }
 }

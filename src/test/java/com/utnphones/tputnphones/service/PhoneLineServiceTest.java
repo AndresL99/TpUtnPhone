@@ -10,11 +10,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.utnphones.tputnphones.utils.TestEntityFactory.getPhoneLines;
+import static com.utnphones.tputnphones.utils.TestEntityFactory.getTariff;
 import static com.utnphones.tputnphones.utils.TestEntityFactory.getTelephoneLine;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -37,6 +41,7 @@ public class PhoneLineServiceTest
     @Test
     void addPhoneLineTest()
     {
+        when(phoneLineRepository.findById(anyString())).thenReturn(Optional.empty());
         when(phoneLineRepository.save(getTelephoneLine())).thenReturn(getTelephoneLine());
 
         PhoneLine phoneLine = phoneLineService.save(getTelephoneLine());
@@ -47,7 +52,7 @@ public class PhoneLineServiceTest
     @Test
     void addPhoneLineTestFail()
     {
-        when(phoneLineRepository.save(getTelephoneLine())).thenThrow(PhoneLineExistException.class);
+        when(phoneLineRepository.findById(anyString())).thenReturn(Optional.ofNullable(getTelephoneLine()));
         assertThrows(PhoneLineExistException.class,()->phoneLineService.save(getTelephoneLine()));
     }
 
@@ -81,4 +86,21 @@ public class PhoneLineServiceTest
 
         assertThrows(PhoneLineNotExistException.class,()->phoneLineService.deletePhoneLine("2241222333"));
     }
+
+    @Test
+    void getByPhoneNumberTest(){
+        String phoneNumber = getTelephoneLine().getPhoneNumber();
+        when(phoneLineRepository.findById(phoneNumber)).thenReturn(Optional.ofNullable(getTelephoneLine()));
+        PhoneLine phoneLine = phoneLineService.getByPhoneNumber(phoneNumber);
+        assertEquals(getTelephoneLine(),phoneLine);
+    }
+
+    @Test
+    void getByPhoneNumberTestFailed()
+    {
+        when(phoneLineRepository.findById("2241222333")).thenThrow(PhoneLineNotExistException.class);
+
+        assertThrows(PhoneLineNotExistException.class,()->phoneLineService.getByPhoneNumber("2241222333"));
+    }
+
 }

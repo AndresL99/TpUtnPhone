@@ -62,6 +62,7 @@ public class PhoneLineController {
     @DeleteMapping("/{phoneNumber}")
     public ResponseEntity deletePhoneLine(Authentication authentication, @PathVariable String phoneNumber)
     {
+        verifyAuthBackOffice(authentication);
         this.phoneLineService.deletePhoneLine(phoneNumber);
         return new ResponseEntity(HttpStatus.OK);
     }

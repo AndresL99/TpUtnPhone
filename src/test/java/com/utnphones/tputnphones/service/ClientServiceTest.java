@@ -16,7 +16,7 @@ import static com.utnphones.tputnphones.utils.TestEntityFactory.getClient;
 import static com.utnphones.tputnphones.utils.TestEntityFactory.getClients;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -39,7 +39,7 @@ public class ClientServiceTest {
     @Test
     void addClientTestOk()
     {
-        Long idClient = getClient().getIdClient();
+        when(clientRepository.findById(anyLong())).thenReturn(Optional.empty());
         when(clientRepository.save(getClient())).thenReturn(getClient());
 
         Client client = clientService.addClient(getClient());
@@ -50,7 +50,7 @@ public class ClientServiceTest {
     @Test
     void addClientTestFail()
     {
-        when(clientRepository.save(getClient())).thenThrow(ClientExistException.class);
+        when(clientRepository.findById(anyLong())).thenReturn(Optional.ofNullable(getClient()));
         assertThrows(ClientExistException.class,()->clientService.addClient(getClient()));
     }
 
