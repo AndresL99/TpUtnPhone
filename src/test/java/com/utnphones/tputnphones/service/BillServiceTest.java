@@ -43,16 +43,6 @@ public class BillServiceTest {
     }
 
     @Test
-    void saveBillTestOk()
-    {
-        when(billRepository.save(getBill())).thenReturn(getBill());
-
-        Bill bill = billService.save(getBill());
-
-        assertEquals(getBill(),bill);
-    }
-
-    @Test
     void findAllTest()
     {
         when(billRepository.findAll()).thenReturn(getBills());

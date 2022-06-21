@@ -35,4 +35,24 @@ public class Querys {
     public static final String GET_CLIENT_USERNAME = "Select c.* from clients c " +
             "join users u on c.dni = u.dni " +
             "where u.username = ?1 ";
+
+    public static final String CALCULATE =
+            " select t.id_tariff,t.id_city_origin,t.id_city_destination,t.prece_x_minute,t.begin_hour,t.until_hour " +
+                    " from tariffs t " +
+                    " left join cities co " +
+                    " on t.id_city_origin= co.id_city " +
+                    " left join cities cd " +
+                    " on t.id_city_destination= cd.id_city " +
+                    " where ?1 like concat(co.prefix_number,'%') " +
+                    " and ?2 like concat(cd.prefix_number,'%') " +
+                    " and length(co.prefix_number)= ( " +
+                    " select max(length(co.prefix_number)) as lenght from tariffs t join cities co " +
+                    " on co.id_city= t.id_city_origin " +
+                    " where ?1 like concat(co.prefix_number,'%') " +
+                    "			) " +
+                    " and length(cd.prefix_number)= ( " +
+                    " select max(length(cd.prefix_number)) as lenght from tariffs t join cities cd " +
+                    " on cd.id_city= t.id_city_destination " +
+                    " where ?2 like concat(cd.prefix_number,'%') " +
+                    "        ); " ;
 }
