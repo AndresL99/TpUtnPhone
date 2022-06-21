@@ -45,7 +45,7 @@ public class ClientBackOfficeController
     }
 
     @GetMapping("/{idClient}")
-    public ResponseEntity<Client> getClient(Authentication authentication,Long idClient)
+    public ResponseEntity<Client> getClient(Authentication authentication,@PathVariable Long idClient)
     {
         verifyAuthBackOffice(authentication);
         Client client = this.clientService.getById(idClient);

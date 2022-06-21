@@ -26,6 +26,7 @@ public class Querys {
             "INNER JOIN telephone_Lines tl " +
             "ON tl.telephone_number = c.id_number_origin " +
             "INNER JOIN clients cl " +
+            "ON tl.id_client = cl.id_client " +
             "WHERE cl.id_client = ?1 AND c.day_time BETWEEN ?2 AND ?3 ";
 
     public static final String GET_BILLS_FOR_USER_CLIENT = "SELECT b.* FROM bills b " +
